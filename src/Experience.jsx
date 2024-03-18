@@ -13,7 +13,7 @@ const torusGeometry = new THREE.TorusGeometry(1, 0.6, 16, 32);
 const material = new THREE.MeshMatcapMaterial();
 
 export default function Experience() {
-  const donutsGroup = useRef();
+  const donuts = useRef([]);
 
   const [matcapTexture] = useMatcapTexture("7B5254_E9DCC7_B19986_C8AC91", 256);
 
@@ -26,7 +26,7 @@ export default function Experience() {
   }, []);
 
   useFrame((state, delta) => {
-    for (const donut of donutsGroup.current.children) {
+    for (const donut of donuts.current) {
       donut.rotation.y += delta * 0.1;
     }
   });
@@ -54,22 +54,23 @@ export default function Experience() {
         </Text3D>
       </Center>
 
-      <group ref={donutsGroup}>
-        {[...Array(100)].map((_, idx) => (
-          <mesh
-            key={idx}
-            position={[
-              (Math.random() - 0.5) * 10,
-              (Math.random() - 0.5) * 10,
-              (Math.random() - 0.5) * 10,
-            ]}
-            scale={0.2 + Math.random() * 0.2}
-            rotation={[Math.random() * Math.PI, Math.random() * Math.PI, 0]}
-            geometry={torusGeometry}
-            material={material}
-          />
-        ))}
-      </group>
+      {[...Array(100)].map((_, idx) => (
+        <mesh
+          ref={(element) => {
+            donuts.current[idx] = element;
+          }}
+          key={idx}
+          position={[
+            (Math.random() - 0.5) * 10,
+            (Math.random() - 0.5) * 10,
+            (Math.random() - 0.5) * 10,
+          ]}
+          scale={0.2 + Math.random() * 0.2}
+          rotation={[Math.random() * Math.PI, Math.random() * Math.PI, 0]}
+          geometry={torusGeometry}
+          material={material}
+        />
+      ))}
     </>
   );
 }
