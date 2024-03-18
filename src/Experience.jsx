@@ -1,3 +1,4 @@
+import * as THREE from "three";
 import {
   OrbitControls,
   Text3D,
@@ -5,13 +6,25 @@ import {
   useMatcapTexture,
 } from "@react-three/drei";
 import { Perf } from "r3f-perf";
-import { useState } from "react";
+import { useEffect } from "react";
+// import { useState } from "react";
+
+const torusGeometry = new THREE.TorusGeometry(1, 0.6, 16, 32);
+const material = new THREE.MeshMatcapMaterial();
 
 export default function Experience() {
   const [matcapTexture] = useMatcapTexture("7B5254_E9DCC7_B19986_C8AC91", 256);
 
-  const [torusGeometry, setTorusGeometry] = useState();
-  const [material, setMaterial] = useState();
+  //   const [torusGeometry, setTorusGeometry] = useState();
+  //   const [material, setMaterial] = useState();
+
+  useEffect(() => {
+    matcapTexture.colorSpace = THREE.SRGBColorSpace;
+    matcapTexture.needsUpdate = true;
+
+    material.matcap = matcapTexture;
+    material.needsUpdate = true;
+  }, []);
 
   return (
     <>
@@ -19,8 +32,8 @@ export default function Experience() {
 
       <OrbitControls makeDefault />
 
-      <torusGeometry ref={setTorusGeometry} />
-      <meshMatcapMaterial ref={setMaterial} matcap={matcapTexture} />
+      {/* <torusGeometry ref={setTorusGeometry} />
+      <meshMatcapMaterial ref={setMaterial} matcap={matcapTexture} /> */}
 
       <Center>
         <Text3D
