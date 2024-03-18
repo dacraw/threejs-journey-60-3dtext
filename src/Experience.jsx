@@ -11,6 +11,7 @@ export default function Experience() {
   const [matcapTexture] = useMatcapTexture("7B5254_E9DCC7_B19986_C8AC91", 256);
 
   const [torusGeometry, setTorusGeometry] = useState();
+  const [material, setMaterial] = useState();
 
   return (
     <>
@@ -19,6 +20,7 @@ export default function Experience() {
       <OrbitControls makeDefault />
 
       <torusGeometry ref={setTorusGeometry} />
+      <meshMatcapMaterial ref={setMaterial} matcap={matcapTexture} />
 
       <Center>
         <Text3D
@@ -31,9 +33,9 @@ export default function Experience() {
           bevelSize={0.02}
           bevelOffset={0}
           bevelSegments={5}
+          material={material}
         >
           Hello R3F
-          <meshMatcapMaterial matcap={matcapTexture} />
         </Text3D>
       </Center>
 
@@ -48,9 +50,8 @@ export default function Experience() {
           scale={0.2 + Math.random() * 0.2}
           rotation={[Math.random() * Math.PI, Math.random() * Math.PI, 0]}
           geometry={torusGeometry}
-        >
-          <meshMatcapMaterial matcap={matcapTexture} />
-        </mesh>
+          material={material}
+        />
       ))}
     </>
   );
